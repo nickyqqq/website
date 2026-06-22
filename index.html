@@ -71,8 +71,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;}
 
   <!-- CINEMA HERO (scroll-driven) -->
   <section id="top" style="height:0;"></section>
-  <section id="cinema" style="position:relative;height:460vh;background:#0a0a0a;">
-    <div id="cc-stage" style="position:sticky;top:0;height:100vh;overflow:hidden;background:radial-gradient(125% 95% at 50% 6%, #17131400 0%, #0a0a0a 48%, #050505 100%);">
+  <section id="cinema" style="position:relative;height:460vh;background:#0a0a0a;clip-path:inset(0);">
+    <div id="cc-stage" style="position:sticky;top:0;height:100vh;overflow:clip;background:radial-gradient(125% 95% at 50% 6%, #17131400 0%, #0a0a0a 48%, #050505 100%);">
       <div style="position:absolute;top:0;left:0;width:100%;height:6px;background:#e10600;z-index:6;"></div>
       <div id="cc-veil" style="position:absolute;inset:0;z-index:0;opacity:0.85;">
         <div id="cc-veil-mount" style="position:absolute;inset:0;"></div>
@@ -1126,21 +1126,15 @@ initIcons();
 
 <!-- Mount React components -->
 <script>
-(function mountComponents() {
-  if (window.DarkVeil && document.getElementById('cc-veil-mount')) {
-    ReactDOM.createRoot(document.getElementById('cc-veil-mount')).render(
-      React.createElement(window.DarkVeil, {
-        speed: 0.7, warpAmount: 0.08, noiseIntensity: 0.04,
-        scanlineIntensity: 0.12, scanlineFrequency: 2.0,
-      })
-    );
-  }
-  if (window.LetterGlitch && document.getElementById('cc-glitch-mount')) {
+function mountComponents() {
+  if (window.LetterGlitch && document.getElementById('cc-glitch-mount') && !document.getElementById('cc-glitch-mount').dataset.mounted) {
+    document.getElementById('cc-glitch-mount').dataset.mounted = '1';
     ReactDOM.createRoot(document.getElementById('cc-glitch-mount')).render(
       React.createElement(window.LetterGlitch, { glitchSpeed: 60, smooth: true, outerVignette: true, centerVignette: false })
     );
   }
-  if (window.FuzzyText && document.getElementById('cc-fuzzy-mount')) {
+  if (window.FuzzyText && document.getElementById('cc-fuzzy-mount') && !document.getElementById('cc-fuzzy-mount').dataset.mounted) {
+    document.getElementById('cc-fuzzy-mount').dataset.mounted = '1';
     ReactDOM.createRoot(document.getElementById('cc-fuzzy-mount')).render(
       React.createElement(window.FuzzyText, {
         fontSize: 'clamp(40px,7.2vw,84px)', fontWeight: 900,
@@ -1149,16 +1143,36 @@ initIcons();
       }, 'BUG BOUNTY')
     );
   }
-  document.querySelectorAll('[data-decrypt]').forEach(el => {
-    const host = el.querySelector('.decrypt-host');
-    if (!host || !window.DecryptedText) return;
-    const text = host.textContent.trim();
-    host.textContent = '';
-    ReactDOM.createRoot(host).render(
-      React.createElement(window.DecryptedText, { text, animateOn: 'view', sequential: true, speed: 20, encryptedClassName: 'cc-enc' })
+  if (window.DecryptedText) {
+    document.querySelectorAll('[data-decrypt]').forEach(el => {
+      if (el.dataset.mounted) return;
+      el.dataset.mounted = '1';
+      const host = el.querySelector('.decrypt-host');
+      if (!host) return;
+      const text = host.textContent.trim();
+      host.textContent = '';
+      ReactDOM.createRoot(host).render(
+        React.createElement(window.DecryptedText, { text, animateOn: 'view', sequential: true, speed: 20, encryptedClassName: 'cc-enc' })
+      );
+    });
+  }
+  // DarkVeil is a module script — may not be ready yet; poll until it is
+  if (window.DarkVeil && document.getElementById('cc-veil-mount') && !document.getElementById('cc-veil-mount').dataset.mounted) {
+    document.getElementById('cc-veil-mount').dataset.mounted = '1';
+    ReactDOM.createRoot(document.getElementById('cc-veil-mount')).render(
+      React.createElement(window.DarkVeil, {
+        speed: 0.7, warpAmount: 0.08, noiseIntensity: 0.04,
+        scanlineIntensity: 0.12, scanlineFrequency: 2.0,
+      })
     );
-  });
-})();
+  } else if (!document.getElementById('cc-veil-mount')?.dataset.mounted) {
+    setTimeout(mountComponents, 50);
+  }
+}
+// Run after all scripts (including modules) have had a chance to execute
+window.addEventListener('load', mountComponents);
+// Also try immediately in case everything is already ready
+mountComponents();
 </script>
 </body>
 </html>
