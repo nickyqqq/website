@@ -82,19 +82,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;}
       </div>
       <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(115% 90% at 50% 42%, rgba(10,10,10,0) 38%, rgba(8,6,6,0.55) 72%, #050505 100%);"></div>
       <div style="position:absolute;top:-22%;left:50%;transform:translateX(-50%);width:84vw;height:74vh;background:radial-gradient(closest-side, rgba(225,6,0,0.18), rgba(225,6,0,0) 70%);pointer-events:none;z-index:1;"></div>
-      <div style="position:absolute;top:90px;left:24px;z-index:5;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;line-height:1.5;">
-        <div style="color:#52525b;">SCROLLCINEMA · FRAME</div>
-        <div id="cc-frame" style="color:#e4e4e7;font-size:13px;margin-top:3px;letter-spacing:0.1em;">0000 / 0600</div>
-      </div>
-      <div style="position:absolute;top:90px;right:24px;z-index:5;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-align:right;display:flex;flex-direction:column;gap:9px;">
-        <div id="cc-act-0" style="color:#e10600;">01 · DISASSEMBLY</div>
-        <div id="cc-act-1" style="color:#52525b;">02 · ROTATION</div>
-        <div id="cc-act-2" style="color:#52525b;">03 · DETAIL</div>
-      </div>
       <div style="position:absolute;left:0;right:0;bottom:0;height:42vh;background:linear-gradient(to top, rgba(5,5,5,0.88) 0%, rgba(5,5,5,0.4) 45%, rgba(5,5,5,0) 100%);z-index:3;pointer-events:none;"></div>
-      <div style="position:absolute;bottom:0;left:0;width:100%;height:3px;background:rgba(255,255,255,0.07);z-index:6;">
-        <div id="cc-bar" style="height:100%;width:0%;background:#e10600;"></div>
-      </div>
       <div id="cc-framewrap" style="position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(16px,3vh,32px);padding:18vh 24px 7vh;">
         <div id="cc-scene" style="display:flex;align-items:center;justify-content:center;perspective:1700px;flex:0 0 auto;">
           <div id="cc-rig" style="position:relative;width:clamp(170px,19vw,250px);aspect-ratio:1600/2560;transform-style:preserve-3d;will-change:transform;">
@@ -126,7 +114,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;}
         </div>
       </div>
       <div id="cc-hint" style="position:absolute;left:50%;bottom:18px;transform:translateX(-50%);z-index:5;display:flex;flex-direction:column;align-items:center;gap:7px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.18em;color:#71717a;pointer-events:none;">
-        <span>SCROLL TO DISASSEMBLE</span>
+        <span>SCROLL TO EXPLORE</span>
         <i data-lucide="chevrons-down" style="width:18px;height:18px;color:#e10600;animation:ccbounce 1.7s ease-in-out infinite;"></i>
       </div>
       <div id="cc-capB" style="position:absolute;left:0;right:0;bottom:9vh;z-index:4;text-align:center;padding:0 24px;opacity:0;pointer-events:none;">
@@ -1038,9 +1026,6 @@ initIcons();
       note: g("cc-note"), rig: g("cc-rig"),
       veil: g("cc-veil"), hero: g("cc-hero"), hint: g("cc-hint"),
       capB: g("cc-capB"), capC: g("cc-capC"), end: g("cc-end"),
-      frame: g("cc-frame"),
-      acts: [g("cc-act-0"), g("cc-act-1"), g("cc-act-2")],
-      bar: g("cc-bar"),
     };
     pages = [
       { el: cc.cover, k: 0, cover: true },
@@ -1110,13 +1095,6 @@ initIcons();
     const endO = seg(0.87, 0.97);
     cc.end.style.opacity = endO.toFixed(3);
     cc.end.style.transform = `translateY(${(20 * (1 - endO)).toFixed(1)}px)`;
-
-    const cur = Math.round(p * 600);
-    cc.frame.textContent = String(cur).padStart(4, "0") + " / 0600";
-
-    const ai = p < 0.30 ? 0 : p < 0.60 ? 1 : 2;
-    cc.acts.forEach((a, i) => { if (a) a.style.color = i === ai ? "#e10600" : "#52525b"; });
-    cc.bar.style.width = (p * 100).toFixed(2) + "%";
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", ccSetup);
