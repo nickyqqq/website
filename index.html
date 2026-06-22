@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>100 Days in Bug Bounty Hunting — A Beginner's Field Guide by Nicky</title>
+<meta name="description" content="A beginner-friendly field guide built from a real 15-week bug bounty learning journey — practical vulnerability explanations, testing methodology, detailed appendices, and 45 original handwritten notes. Launch price $9.75." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0a0a'/%3E%3Crect x='6' y='6' width='20' height='20' fill='%23e10600'/%3E%3Crect x='13' y='13' width='6' height='6' fill='%230a0a0a'/%3E%3C/svg%3E" />
+<meta property="og:type" content="product" />
+<meta property="og:title" content="100 Days in Bug Bounty Hunting — From Zero to Finding Vulnerabilities" />
+<meta property="og:description" content="A beginner-friendly field guide built from a real 15-week learning journey. Launch price $9.75 (regularly $19)." />
+<meta property="og:image" content="uploads/cover.png" />
+<meta property="og:url" content="https://someonenamenicky.gumroad.com/l/xmqofg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="100 Days in Bug Bounty Hunting" />
+<meta name="twitter:description" content="A beginner-friendly bug bounty field guide built from real learning notes. Launch price $9.75." />
+<meta name="twitter:image" content="uploads/cover.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","name":"100 Days in Bug Bounty Hunting","brand":{"@type":"Person","name":"Nicky"},"description":"A beginner-friendly bug bounty field guide built from a real 15-week learning journey, with practical vulnerability explanations, testing methodology, detailed appendices, and 45 original handwritten notes.","image":"uploads/cover.png","url":"https://someonenamenicky.gumroad.com/l/xmqofg","offers":{"@type":"Offer","price":"9.75","priceCurrency":"USD","availability":"https://schema.org/InStock","url":"https://someonenamenicky.gumroad.com/l/xmqofg"}}</script>
+<style>
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:#ffffff;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#0a0a0a;}
+img{max-width:100%;display:block;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+:focus-visible{outline:3px solid #e10600;outline-offset:3px;border-radius:2px;}
+.mobilebar{display:none;}
+@media (max-width:860px){.mobilebar{display:flex;}body{padding-bottom:78px;}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}*{animation-duration:0.001ms !important;transition-duration:0.001ms !important;}}
+@keyframes lbfade{from{opacity:0;}to{opacity:1;}}
+
+/* Gallery button hover */
+.gallery-btn:hover{border-color:#e10600 !important;transform:translateY(-2px);}
+.gallery-btn:focus-visible{border-color:#e10600 !important;}
+
+/* FAQ */
+.faq-answer{display:none;}
+.faq-answer.open{display:block;}
+
+/* Lightbox */
+#lightbox{display:none;position:fixed;inset:0;z-index:100;background:rgba(5,5,5,0.94);flex-direction:column;animation:lbfade .15s ease;}
+#lightbox.open{display:flex;}
+
+/* ScrollCinema */
+@keyframes ccbounce{0%,100%{transform:translateY(0);opacity:0.9;}50%{transform:translateY(9px);opacity:0.4;}}
+.cc-enc{color:#e10600;opacity:0.92;}
+</style>
+</head>
+<body>
+
+<div style="max-width:100%;overflow-x:hidden;">
+
+  <!-- HEADER -->
+  <header style="position:sticky;top:0;z-index:50;background:rgba(10,10,10,0.95);backdrop-filter:blur(8px);border-bottom:1px solid #27272a;">
+    <div style="max-width:1180px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;">
+      <a href="#top" style="display:flex;align-items:center;gap:10px;color:#fff;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:13px;letter-spacing:0.04em;">
+        <span style="display:inline-block;width:10px;height:10px;background:#e10600;"></span>
+        100 DAYS <span style="color:#71717a;margin-left:4px;">/ BUG BOUNTY</span>
+      </a>
+      <a href="https://someonenamenicky.gumroad.com/l/xmqofg" target="_blank" rel="noopener noreferrer" style="background:#e10600;color:#fff;font-weight:700;font-size:14px;padding:9px 16px;border-radius:6px;display:inline-flex;align-items:center;gap:8px;">
+        <i data-lucide="download" style="width:15px;height:15px;"></i> Get the Ebook
+      </a>
+    </div>
+  </header>
+
+  <!-- CINEMA HERO (scroll-driven) -->
+  <section id="top" style="height:0;"></section>
+  <section id="cinema" style="position:relative;height:460vh;background:#0a0a0a;">
+    <div id="cc-stage" style="position:sticky;top:0;height:100vh;overflow:hidden;background:radial-gradient(125% 95% at 50% 6%, #17131400 0%, #0a0a0a 48%, #050505 100%);">
+      <div style="position:absolute;top:0;left:0;width:100%;height:6px;background:#e10600;z-index:6;"></div>
+      <div id="cc-veil" style="position:absolute;inset:0;z-index:0;opacity:0.85;">
+        <div id="cc-veil-mount" style="position:absolute;inset:0;"></div>
+      </div>
+      <div id="cc-glitch" style="position:absolute;inset:0;z-index:0;opacity:0.18;mix-blend-mode:screen;pointer-events:none;">
+        <div id="cc-glitch-mount" style="position:absolute;inset:0;"></div>
+      </div>
+      <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(115% 90% at 50% 42%, rgba(10,10,10,0) 38%, rgba(8,6,6,0.55) 72%, #050505 100%);"></div>
+      <div style="position:absolute;top:-22%;left:50%;transform:translateX(-50%);width:84vw;height:74vh;background:radial-gradient(closest-side, rgba(225,6,0,0.18), rgba(225,6,0,0) 70%);pointer-events:none;z-index:1;"></div>
+      <div style="position:absolute;top:90px;left:24px;z-index:5;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;line-height:1.5;">
+        <div style="color:#52525b;">SCROLLCINEMA · FRAME</div>
+        <div id="cc-frame" style="color:#e4e4e7;font-size:13px;margin-top:3px;letter-spacing:0.1em;">0000 / 0600</div>
+      </div>
+      <div style="position:absolute;top:90px;right:24px;z-index:5;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;text-align:right;display:flex;flex-direction:column;gap:9px;">
+        <div id="cc-act-0" style="color:#e10600;">01 · DISASSEMBLY</div>
+        <div id="cc-act-1" style="color:#52525b;">02 · ROTATION</div>
+        <div id="cc-act-2" style="color:#52525b;">03 · DETAIL</div>
+      </div>
+      <div style="position:absolute;left:0;right:0;bottom:0;height:42vh;background:linear-gradient(to top, rgba(5,5,5,0.88) 0%, rgba(5,5,5,0.4) 45%, rgba(5,5,5,0) 100%);z-index:3;pointer-events:none;"></div>
+      <div style="position:absolute;bottom:0;left:0;width:100%;height:3px;background:rgba(255,255,255,0.07);z-index:6;">
+        <div id="cc-bar" style="height:100%;width:0%;background:#e10600;"></div>
+      </div>
+      <div id="cc-framewrap" style="position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(16px,3vh,32px);padding:18vh 24px 7vh;">
+        <div id="cc-scene" style="display:flex;align-items:center;justify-content:center;perspective:1700px;flex:0 0 auto;">
+          <div id="cc-rig" style="position:relative;width:clamp(170px,19vw,250px);aspect-ratio:1600/2560;transform-style:preserve-3d;will-change:transform;">
+            <img id="cc-note" src="uploads/20260426_213024.jpg" alt="Original handwritten note" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;box-shadow:0 30px 90px rgba(0,0,0,0.7);backface-visibility:hidden;will-change:transform;" />
+            <img id="cc-p4" src="uploads/contents-page-007.png" alt="Contents page" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;background:#fff;box-shadow:0 22px 60px rgba(0,0,0,0.55);backface-visibility:hidden;will-change:transform;" />
+            <img id="cc-p3" src="uploads/contents-page-006.png" alt="Contents page" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;background:#fff;box-shadow:0 22px 60px rgba(0,0,0,0.55);backface-visibility:hidden;will-change:transform;" />
+            <img id="cc-p2" src="uploads/contents-page-005.png" alt="Contents page" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;background:#fff;box-shadow:0 22px 60px rgba(0,0,0,0.55);backface-visibility:hidden;will-change:transform;" />
+            <img id="cc-p1" src="uploads/week-1-opener-page.png" alt="Week 1 opener page" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;background:#fff;box-shadow:0 22px 60px rgba(0,0,0,0.55);backface-visibility:hidden;will-change:transform;" />
+            <div id="cc-cover" style="position:absolute;inset:0;border-radius:4px;overflow:hidden;box-shadow:0 44px 100px rgba(0,0,0,0.78), 0 0 0 1px rgba(225,6,0,0.25);backface-visibility:hidden;will-change:transform;">
+              <img src="uploads/cover.png" alt="Cover of 100 Days in Bug Bounty Hunting by Nicky" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;" />
+            </div>
+          </div>
+        </div>
+        <div id="cc-hero" style="flex:0 0 auto;display:flex;flex-direction:column;align-items:center;text-align:center;pointer-events:none;">
+          <h1 aria-label="100 Days in Bug Bounty Hunting" style="display:flex;flex-direction:column;align-items:center;gap:0;margin:0 0 10px;font-family:Archivo,sans-serif;text-transform:uppercase;color:#fff;text-shadow:0 2px 30px rgba(0,0,0,0.6);">
+            <span style="font-weight:800;font-size:clamp(14px,1.7vw,21px);letter-spacing:0.24em;opacity:0.9;line-height:1.4;">100 Days in</span>
+            <div id="cc-fuzzy-mount" style="pointer-events:auto;"></div>
+            <span style="font-weight:800;font-size:clamp(14px,1.7vw,21px);letter-spacing:0.24em;opacity:0.9;line-height:1.4;">Hunting</span>
+          </h1>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.24em;color:#e10600;font-weight:600;text-transform:uppercase;margin-bottom:18px;">Real notes · 15 weeks · one field guide</div>
+          <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:22px;">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;letter-spacing:0.12em;background:#e10600;color:#fff;padding:5px 9px;border-radius:4px;">LAUNCH PRICE</span>
+            <span style="text-decoration:line-through;color:#71717a;font-size:20px;font-weight:600;">$19</span>
+            <span style="font-family:Archivo,sans-serif;font-weight:900;font-size:clamp(34px,4.6vw,50px);line-height:1;letter-spacing:-0.02em;color:#fff;">$9.75</span>
+          </div>
+          <a href="https://someonenamenicky.gumroad.com/l/xmqofg" target="_blank" rel="noopener noreferrer" style="pointer-events:auto;background:#e10600;color:#fff;font-weight:700;font-size:16px;padding:14px 24px;border-radius:6px;display:inline-flex;align-items:center;gap:9px;box-shadow:0 2px 0 rgba(0,0,0,0.4);">
+            <i data-lucide="download" style="width:18px;height:18px;"></i> Get the Ebook — $9.75
+          </a>
+        </div>
+      </div>
+      <div id="cc-hint" style="position:absolute;left:50%;bottom:18px;transform:translateX(-50%);z-index:5;display:flex;flex-direction:column;align-items:center;gap:7px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.18em;color:#71717a;pointer-events:none;">
+        <span>SCROLL TO DISASSEMBLE</span>
+        <i data-lucide="chevrons-down" style="width:18px;height:18px;color:#e10600;animation:ccbounce 1.7s ease-in-out infinite;"></i>
+      </div>
+      <div id="cc-capB" style="position:absolute;left:0;right:0;bottom:9vh;z-index:4;text-align:center;padding:0 24px;opacity:0;pointer-events:none;">
+        <p style="font-family:Archivo,sans-serif;font-weight:700;font-size:clamp(24px,3.6vw,42px);letter-spacing:-0.02em;line-height:1.1;margin:0;color:#fff;text-shadow:0 2px 30px rgba(0,0,0,0.7);">It started as 45 handwritten notes.</p>
+      </div>
+      <div id="cc-capC" style="position:absolute;left:0;right:0;bottom:9vh;z-index:4;text-align:center;padding:0 24px;opacity:0;pointer-events:none;">
+        <p style="font-family:Archivo,sans-serif;font-weight:700;font-size:clamp(24px,3.6vw,42px);letter-spacing:-0.02em;line-height:1.1;margin:0;color:#fff;text-shadow:0 2px 30px rgba(0,0,0,0.7);">Fifteen weeks. One vulnerability at a time.</p>
+      </div>
+      <div id="cc-end" style="position:absolute;left:0;right:0;bottom:8vh;z-index:4;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 24px;opacity:0;pointer-events:none;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.22em;color:#e10600;font-weight:600;text-transform:uppercase;margin-bottom:14px;">From the first page to your first finding</div>
+        <a href="https://someonenamenicky.gumroad.com/l/xmqofg" target="_blank" rel="noopener noreferrer" style="pointer-events:auto;background:#e10600;color:#fff;font-weight:700;font-size:17px;padding:15px 26px;border-radius:6px;display:inline-flex;align-items:center;gap:10px;box-shadow:0 2px 0 rgba(0,0,0,0.4);">
+          <i data-lucide="download" style="width:19px;height:19px;"></i> Get the Ebook — $9.75
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CREDIBILITY STRIP -->
+  <section style="background:#e10600;color:#fff;">
+    <div style="max-width:1180px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">
+      <div style="padding:26px 22px;display:flex;align-items:center;gap:14px;border-left:1px solid rgba(255,255,255,0.18);">
+        <i data-lucide="calendar-range" style="width:26px;height:26px;flex:none;"></i>
+        <div>
+          <div style="font-family:Archivo,sans-serif;font-weight:800;font-size:17px;letter-spacing:-0.01em;">15-week journey</div>
+          <div style="font-size:13.5px;color:rgba(255,255,255,0.82);margin-top:2px;">A structured learning timeline</div>
+        </div>
+      </div>
+      <div style="padding:26px 22px;display:flex;align-items:center;gap:14px;border-left:1px solid rgba(255,255,255,0.18);">
+        <i data-lucide="list-checks" style="width:26px;height:26px;flex:none;"></i>
+        <div>
+          <div style="font-family:Archivo,sans-serif;font-weight:800;font-size:17px;letter-spacing:-0.01em;">Day-by-day lessons</div>
+          <div style="font-size:13.5px;color:rgba(255,255,255,0.82);margin-top:2px;">Small, repeatable steps</div>
+        </div>
+      </div>
+      <div style="padding:26px 22px;display:flex;align-items:center;gap:14px;border-left:1px solid rgba(255,255,255,0.18);">
+        <i data-lucide="shield-half" style="width:26px;height:26px;flex:none;"></i>
+        <div>
+          <div style="font-family:Archivo,sans-serif;font-weight:800;font-size:17px;letter-spacing:-0.01em;">Practical topics</div>
+          <div style="font-size:13.5px;color:rgba(255,255,255,0.82);margin-top:2px;">Real security concepts</div>
+        </div>
+      </div>
+      <div style="padding:26px 22px;display:flex;align-items:center;gap:14px;border-left:1px solid rgba(255,255,255,0.18);">
+        <i data-lucide="pen-line" style="width:26px;height:26px;flex:none;"></i>
+        <div>
+          <div style="font-family:Archivo,sans-serif;font-weight:800;font-size:17px;letter-spacing:-0.01em;">Handwritten notes</div>
+          <div style="font-size:13.5px;color:rgba(255,255,255,0.82);margin-top:2px;">45 original photos</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT'S INSIDE -->
+  <section style="background:#fff;">
+    <div style="max-width:1180px;margin:0 auto;padding:clamp(60px,8vw,104px) 24px;">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.22em;color:#e10600;font-weight:600;text-transform:uppercase;margin-bottom:14px;">What's inside</div>
+      <h2 data-decrypt="true" style="font-family:Archivo,sans-serif;font-weight:800;font-size:clamp(30px,4.6vw,48px);letter-spacing:-0.025em;line-height:1.04;margin:0 0 16px;max-width:760px;"><span class="decrypt-host">Everything a beginner needs, in one structured resource</span></h2>
+      <p style="font-size:18px;line-height:1.6;color:#52525b;max-width:640px;margin:0 0 48px;">Built from real learning notes and practical research — organized so you can follow it day by day.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:20px;">
+
+        <div style="border:1px solid #e4e4e7;border-radius:6px;padding:30px 28px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,0.04);">
+          <div style="width:46px;height:46px;border-radius:6px;background:#0a0a0a;display:flex;align-items:center;justify-content:center;margin-bottom:18px;">
+            <i data-lucide="route" style="width:23px;height:23px;color:#e10600;"></i>
+          </div>
+          <h3 style="font-family:Archivo,sans-serif;font-weight:700;font-size:19px;letter-spacing:-0.01em;margin:0 0 8px;">Structured beginner roadmap</h3>
+          <p style="font-size:15.5px;line-height:1.6;color:#52525b;margin:0;">A clear, week-by-week path so you always know what to learn next.</p>
+        </div>
+
+        <div style="border:1px solid #e4e4e7;border-radius:6px;padding:30px 28px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,0.04);">
+          <div style="width:46px;height:46px;border-radius:6px;background:#0a0a0a;display:flex;align-items:center;justify-content:center;margin-bottom:18px;">
+            <i data-lucide="bug" style="width:23px;height:23px;color:#e10600;"></i>
+          </div>
+          <h3 style="font-family:Archivo,sans-serif;font-weight:700;font-size:19px;letter-spacing:-0.01em;margin:0 0 8px;">Practical vulnerability explanations</h3>
+          <p style="font-size:15.5px;line-height:1.6;color:#52525b;margin:0;">Plain-language breakdowns of how common web vulnerabilities actually work.</p>
+        </div>
+
+        <div style="border:1px solid #e4e4e7;border-radius:6px;padding:30px 28px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,0.04);">
+          <div style="width:46px;height:46px;border-radius:6px;background:#0a0a0a;display:flex;align-items:center;justify-content:center;margin-bottom:18px;">
+            <i data-lucide="radar" style="width:23px;height:23px;color:#e10600;"></i>
+          </div>
+          <h3 style="font-family:Archivo,sans-serif;font-weight:700;font-size:19px;letter-spacing:-0.01em;margin:0 0 8px;">Reconnaissance &amp; testing methodology</h3>
+          <p style="font-size:15.5px;line-height:1.6;color:#52525b;margin:0;">How to map a target, find surface area, and test it methodically.</p>
+        </div>
+
+        <div style="border:1px solid #e4e4e7;border-radius:6px;padding:30px 28px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,0.04);">
+          <div style="width:46px;height:46px;border-radius:6px;background:#0a0a0a;display:flex;align-items:center;justify-content:center;margin-bottom:18px;">
+            <i data-lucide="file-text" style="width:23px;height:23px;color:#e10600;"></i>
+          </div>
+          <h3 style="font-family:Archivo,sans-serif;font-weight:700;font-size:19px;letter-spacing:-0.01em;margin:0 0 8px;">Report-writing guidance</h3>
+          <p style="font-size:15.5px;line-height:1.6;color:#52525b;margin:0;">How to document a finding clearly so it can be understood and reproduced.</p>
+        </div>
+
+        <div style="border:1px solid #e4e4e7;border-radius:6px;padding:30px 28px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,0.04);">
+          <div style="width:46px;height:46px;border-radius:6px;background:#0a0a0a;display:flex;align-items:center;justify-content:center;margin-bottom:18px;">
+            <i data-lucide="library" style="width:23px;height:23px;color:#e10600;"></i>
+          </div>
+          <h3 style="font-family:Archivo,sans-serif;font-weight:700;font-size:19px;letter-spacing:-0.01em;margin:0 0 8px;">Reference appendices</h3>
+          <p style="font-size:15.5px;line-height:1.6;color:#52525b;margin:0;">Detailed appendices to return to as you keep practicing.</p>
+        </div>
+
+        <div style="border:1px solid #e4e4e7;border-radius:6px;padding:30px 28px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,0.04);">
+          <div style="width:46px;height:46px;border-radius:6px;background:#0a0a0a;display:flex;align-items:center;justify-content:center;margin-bottom:18px;">
+            <i data-lucide="notebook-pen" style="width:23px;height:23px;color:#e10600;"></i>
+          </div>
+          <h3 style="font-family:Archivo,sans-serif;font-weight:700;font-size:19px;letter-spacing:-0.01em;margin:0 0 8px;">45 handwritten-note photos</h3>
+          <p style="font-size:15.5px;line-height:1.6;color:#52525b;margin:0;">Photographs of the original notes taken throughout the journey.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PREVIEW GALLERY -->
+  <section id="gallery" style="background:#0a0a0a;color:#fff;scroll-margin-top:70px;">
+    <div style="max-width:1180px;margin:0 auto;padding:clamp(60px,8vw,104px) 24px;">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.22em;color:#e10600;font-weight:600;text-transform:uppercase;margin-bottom:14px;">Preview inside</div>
+      <h2 data-decrypt="true" style="font-family:Archivo,sans-serif;font-weight:800;font-size:clamp(30px,4.6vw,48px);letter-spacing:-0.025em;line-height:1.04;margin:0 0 16px;max-width:760px;"><span class="decrypt-host">Look inside the book</span></h2>
+      <p style="font-size:18px;line-height:1.6;color:#a1a1aa;max-width:620px;margin:0 0 48px;">Contents pages, the Week 1 opener, lesson pages, and original handwritten notes. Click any page to open it full size — use the arrow keys to browse.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px;" id="preview-grid">
+      </div>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section style="background:#fff;">
+    <div style="max-width:1180px;margin:0 auto;padding:clamp(60px,8vw,104px) 24px;">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.22em;color:#e10600;font-weight:600;text-transform:uppercase;margin-bottom:14px;">The path</div>
+      <h2 data-decrypt="true" style="font-family:Archivo,sans-serif;font-weight:800;font-size:clamp(30px,4.6vw,48px);letter-spacing:-0.025em;line-height:1.04;margin:0 0 48px;max-width:760px;"><span class="decrypt-host">Your 15-week roadmap</span></h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:16px;" id="roadmap-grid">
+      </div>
+    </div>
+  </section>
+
+  <!-- TOPICS -->
+  <section style="background:#f4f4f5;">
+    <div style="max-width:1180px;margin:0 auto;padding:clamp(56px,7vw,92px) 24px;">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.22em;color:#e10600;font-weight:600;text-transform:uppercase;margin-bottom:14px;">Coverage</div>
+      <h2 data-decrypt="true" style="font-family:Archivo,sans-serif;font-weight:800;font-size:clamp(30px,4.6vw,48px);letter-spacing:-0.025em;line-height:1.04;margin:0 0 36px;max-width:760px;"><span class="decrypt-host">Topics you'll explore</span></h2>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;" id="topics-list">
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTAGRAM STORY -->
+  <section style="background:#0a0a0a;color:#fff;">
+    <div style="max-width:820px;margin:0 auto;padding:clamp(60px,8vw,104px) 24px;text-align:center;">
+      <i data-lucide="camera" style="width:34px;height:34px;color:#e10600;margin:0 auto 22px;display:block;"></i>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.22em;color:#e10600;font-weight:600;text-transform:uppercase;margin-bottom:18px;">From Instagram series to ebook</div>
+      <p style="font-family:Archivo,sans-serif;font-weight:600;font-size:clamp(22px,3vw,32px);line-height:1.4;letter-spacing:-0.01em;margin:0;color:#f4f4f5;">This book began as an Instagram series documenting my bug bounty learning journey. I converted my lessons, mistakes, practical research, and handwritten notes into one structured resource for other beginners.</p>
+      <div style="margin-top:28px;font-family:'IBM Plex Mono',monospace;font-size:14px;color:#a1a1aa;letter-spacing:0.04em;">— Nicky</div>
+    </div>
+  </section>
+
+  <!-- NOTES GALLERY -->
+  <section style="background:#fff;">
+    <div style="max-width:1180px;margin:0 auto;padding:clamp(60px,8vw,104px) 24px;">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.22em;color:#e10600;font-weight:600;text-transform:uppercase;margin-bottom:14px;">The real notes</div>
+      <h2 data-decrypt="true" style="font-family:Archivo,sans-serif;font-weight:800;font-size:clamp(30px,4.6vw,48px);letter-spacing:-0.025em;line-height:1.04;margin:0 0 16px;max-width:760px;"><span class="decrypt-host">45 original handwritten notes</span></h2>
+      <p style="font-size:18px;line-height:1.6;color:#52525b;max-width:620px;margin:0 0 48px;">Photographs of the actual notes written throughout the journey — included in the book exactly as they were made. Click to view any note full size.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;" id="notes-grid">
+      </div>
+    </div>
+  </section>
+
+  <!-- WHO THIS IS FOR -->
+  <section style="background:#f4f4f5;">
+    <div style="max-width:1180px;margin:0 auto;padding:clamp(60px,8vw,104px) 24px;">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.22em;color:#e10600;font-weight:600;text-transform:uppercase;margin-bottom:14px;">Who it's for</div>
+      <h2 data-decrypt="true" style="font-family:Archivo,sans-serif;font-weight:800;font-size:clamp(30px,4.6vw,48px);letter-spacing:-0.025em;line-height:1.04;margin:0 0 48px;max-width:760px;"><span class="decrypt-host">Who this is for</span></h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px;">
+
+        <div style="background:#fff;border:1px solid #e4e4e7;border-radius:6px;padding:28px;display:flex;gap:16px;align-items:flex-start;">
+          <div style="width:44px;height:44px;border-radius:6px;background:#0a0a0a;display:flex;align-items:center;justify-content:center;flex:none;">
+            <i data-lucide="sprout" style="width:22px;height:22px;color:#e10600;"></i>
+          </div>
+          <div>
+            <h3 style="font-family:Archivo,sans-serif;font-weight:700;font-size:18px;letter-spacing:-0.01em;margin:0 0 6px;">Beginners starting bug bounty hunting</h3>
+            <p style="font-size:15px;line-height:1.55;color:#52525b;margin:0;">No prior experience required — it starts from the basics.</p>
+          </div>
+        </div>
+
+        <div style="background:#fff;border:1px solid #e4e4e7;border-radius:6px;padding:28px;display:flex;gap:16px;align-items:flex-start;">
+          <div style="width:44px;height:44px;border-radius:6px;background:#0a0a0a;display:flex;align-items:center;justify-content:center;flex:none;">
+            <i data-lucide="graduation-cap" style="width:22px;height:22px;color:#e10600;"></i>
+          </div>
+          <div>
+            <h3 style="font-family:Archivo,sans-serif;font-weight:700;font-size:18px;letter-spacing:-0.01em;margin:0 0 6px;">Students learning web application security</h3>
+            <p style="font-size:15px;line-height:1.55;color:#52525b;margin:0;">A practical companion to coursework and self-study.</p>
+          </div>
+        </div>
+
+        <div style="background:#fff;border:1px solid #e4e4e7;border-radius:6px;padding:28px;display:flex;gap:16px;align-items:flex-start;">
+          <div style="width:44px;height:44px;border-radius:6px;background:#0a0a0a;display:flex;align-items:center;justify-content:center;flex:none;">
+            <i data-lucide="map" style="width:22px;height:22px;color:#e10600;"></i>
+          </div>
+          <div>
+            <h3 style="font-family:Archivo,sans-serif;font-weight:700;font-size:18px;letter-spacing:-0.01em;margin:0 0 6px;">People struggling to build a learning plan</h3>
+            <p style="font-size:15px;line-height:1.55;color:#52525b;margin:0;">A ready-made structure so you stop guessing what's next.</p>
+          </div>
+        </div>
+
+        <div style="background:#fff;border:1px solid #e4e4e7;border-radius:6px;padding:28px;display:flex;gap:16px;align-items:flex-start;">
+          <div style="width:44px;height:44px;border-radius:6px;background:#0a0a0a;display:flex;align-items:center;justify-content:center;flex:none;">
+            <i data-lucide="lightbulb" style="width:22px;height:22px;color:#e10600;"></i>
+          </div>
+          <div>
+            <h3 style="font-family:Archivo,sans-serif;font-weight:700;font-size:18px;letter-spacing:-0.01em;margin:0 0 6px;">Learners who want practical context</h3>
+            <p style="font-size:15px;line-height:1.55;color:#52525b;margin:0;">Real lessons and notes, not definitions alone.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- HONEST EXPECTATIONS -->
+  <section style="background:#fff;">
+    <div style="max-width:820px;margin:0 auto;padding:clamp(48px,6vw,72px) 24px;">
+      <div style="border:1px solid #e4e4e7;border-left:4px solid #e10600;border-radius:6px;padding:32px 30px;background:#fafafa;display:flex;gap:18px;align-items:flex-start;">
+        <i data-lucide="info" style="width:24px;height:24px;color:#e10600;flex:none;margin-top:3px;"></i>
+        <div>
+          <h3 style="font-family:Archivo,sans-serif;font-weight:700;font-size:20px;margin:0 0 10px;">Honest expectations</h3>
+          <p style="font-size:16px;line-height:1.65;color:#3f3f46;margin:0;">This ebook is a learning journey and practical field guide. It does not guarantee bounties or income. Results depend on practice, persistence, legal authorization, and continued learning.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section style="background:#f4f4f5;">
+    <div style="max-width:820px;margin:0 auto;padding:clamp(60px,8vw,100px) 24px;">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.22em;color:#e10600;font-weight:600;text-transform:uppercase;margin-bottom:14px;">Questions</div>
+      <h2 data-decrypt="true" style="font-family:Archivo,sans-serif;font-weight:800;font-size:clamp(30px,4.6vw,48px);letter-spacing:-0.025em;line-height:1.04;margin:0 0 40px;"><span class="decrypt-host">Frequently asked</span></h2>
+      <div style="display:flex;flex-direction:column;gap:12px;" id="faq-list">
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section style="background:#0a0a0a;color:#fff;position:relative;overflow:hidden;">
+    <div style="position:absolute;top:0;left:0;width:100%;height:6px;background:#e10600;"></div>
+    <div style="max-width:1180px;margin:0 auto;padding:clamp(60px,8vw,104px) 24px;display:flex;flex-wrap:wrap;gap:clamp(32px,5vw,64px);align-items:center;justify-content:center;">
+      <img src="uploads/cover.png" alt="Cover of 100 Days in Bug Bounty Hunting by Nicky" width="1600" height="2560" loading="lazy" decoding="async" style="flex:0 1 280px;width:100%;max-width:280px;height:auto;border-radius:6px;box-shadow:0 20px 50px rgba(0,0,0,0.55);" />
+      <div style="flex:1 1 380px;min-width:300px;">
+        <h2 data-decrypt="true" style="font-family:Archivo,sans-serif;font-weight:900;font-size:clamp(32px,4.8vw,54px);letter-spacing:-0.025em;line-height:1.02;margin:0 0 18px;text-transform:uppercase;"><span class="decrypt-host">Start your bug bounty learning journey</span></h2>
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:15px;color:#a1a1aa;letter-spacing:0.03em;margin:0 0 28px;">Regularly $19 · Launch price $9.75</p>
+        <a href="https://someonenamenicky.gumroad.com/l/xmqofg" target="_blank" rel="noopener noreferrer" style="background:#e10600;color:#fff;font-weight:700;font-size:18px;padding:17px 30px;border-radius:6px;display:inline-flex;align-items:center;gap:10px;box-shadow:0 2px 0 rgba(0,0,0,0.4);">
+          <i data-lucide="download" style="width:20px;height:20px;"></i> Get the Ebook — $9.75
+        </a>
+        <div style="margin-top:22px;font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:#8b8b93;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;">
+          <span>Instant PDF download</span><span style="color:#e10600;">·</span><span>Secure checkout through Gumroad</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background:#050505;color:#a1a1aa;border-top:1px solid #1f1f1f;">
+    <div style="max-width:1180px;margin:0 auto;padding:48px 24px 40px;">
+      <div style="display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:flex-start;">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;color:#fff;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:13px;letter-spacing:0.04em;margin-bottom:8px;">
+            <span style="display:inline-block;width:10px;height:10px;background:#e10600;"></span>100 DAYS IN BUG BOUNTY HUNTING
+          </div>
+          <div style="font-size:14px;">By <strong style="color:#e4e4e7;">Nicky</strong> · From Zero to Finding Vulnerabilities</div>
+        </div>
+        <a href="https://someonenamenicky.gumroad.com/l/xmqofg" target="_blank" rel="noopener noreferrer" style="border:1px solid #3f3f46;color:#fff;font-weight:600;font-size:14px;padding:11px 18px;border-radius:6px;display:inline-flex;align-items:center;gap:9px;">
+          <i data-lucide="external-link" style="width:15px;height:15px;"></i> Buy on Gumroad
+        </a>
+      </div>
+      <div style="border-top:1px solid #1f1f1f;margin-top:32px;padding-top:24px;display:flex;flex-direction:column;gap:10px;font-size:13px;line-height:1.6;color:#71717a;max-width:760px;">
+        <p style="margin:0;"><strong style="color:#a1a1aa;">Educational use only.</strong> This ebook is provided for learning purposes. It does not guarantee bounties, income, employment, or any specific outcome.</p>
+        <p style="margin:0;"><strong style="color:#a1a1aa;">Test responsibly.</strong> Only test systems you own or are explicitly authorized to test. Always follow program scope, applicable law, and responsible disclosure practices.</p>
+        <p style="margin:16px 0 0;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#52525b;">© 2026 Nicky. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- STICKY MOBILE PURCHASE BAR -->
+  <div class="mobilebar" style="position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(10,10,10,0.97);backdrop-filter:blur(8px);border-top:1px solid #27272a;padding:12px 16px;align-items:center;justify-content:space-between;gap:12px;">
+    <div style="line-height:1.1;">
+      <div style="display:flex;align-items:center;gap:8px;"><span style="text-decoration:line-through;color:#71717a;font-size:13px;">$19</span><span style="font-family:Archivo,sans-serif;font-weight:900;font-size:22px;color:#fff;">$9.75</span></div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.1em;color:#e10600;">LAUNCH PRICE</div>
+    </div>
+    <a href="https://someonenamenicky.gumroad.com/l/xmqofg" target="_blank" rel="noopener noreferrer" style="flex:1;max-width:260px;background:#e10600;color:#fff;font-weight:700;font-size:15px;padding:14px 16px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;gap:8px;">
+      <i data-lucide="download" style="width:17px;height:17px;"></i> Get the Ebook — $9.75
+    </a>
+  </div>
+
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;flex:none;">
+    <span id="lb-counter" style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#a1a1aa;letter-spacing:0.06em;"></span>
+    <button type="button" id="lb-close" aria-label="Close preview" style="width:44px;height:44px;border-radius:6px;border:1px solid #3f3f46;display:flex;align-items:center;justify-content:center;color:#fff;">
+      <i data-lucide="x" style="width:22px;height:22px;"></i>
+    </button>
+  </div>
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;gap:14px;padding:0 14px 14px;min-height:0;">
+    <button type="button" id="lb-prev" aria-label="Previous image" style="width:48px;height:48px;flex:none;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid #3f3f46;display:flex;align-items:center;justify-content:center;color:#fff;">
+      <i data-lucide="chevron-left" style="width:24px;height:24px;"></i>
+    </button>
+    <div id="lb-content" style="flex:1;height:100%;display:flex;align-items:center;justify-content:center;min-width:0;cursor:pointer;"></div>
+    <button type="button" id="lb-next" aria-label="Next image" style="width:48px;height:48px;flex:none;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid #3f3f46;display:flex;align-items:center;justify-content:center;color:#fff;">
+      <i data-lucide="chevron-right" style="width:24px;height:24px;"></i>
+    </button>
+  </div>
+  <div id="lb-caption" style="flex:none;text-align:center;padding:0 20px 20px;font-size:14px;color:#c8c8cf;"></div>
+</div>
+
+<!-- DarkVeil: WebGL CPPN shader — must be type="module" for dynamic import() -->
+<script type="module">
+const React = window.React;
+const { useRef, useEffect } = React;
+
+window.DarkVeil = function DarkVeil({
+  speed = 1.0,
+  warpAmount = 0.1,
+  noiseIntensity = 0.05,
+  scanlineIntensity = 0.15,
+  scanlineFrequency = 3.0,
+}) {
+  const canvasRef = useRef(null);
+  const stateRef = useRef({});
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    let destroyed = false;
+    let gl, program, animId;
+
+    import('https://esm.sh/ogl@1.0.11').then(({ Renderer, Program, Mesh, Triangle }) => {
+      if (destroyed) return;
+      const renderer = new Renderer({ canvas, alpha: true, antialias: false });
+      gl = renderer.gl;
+      gl.clearColor(0, 0, 0, 0);
+
+      const vert = `
+        attribute vec2 position;
+        attribute vec2 uv;
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = vec4(position, 0.0, 1.0);
+        }`;
+
+      const frag = `
+        precision mediump float;
+        varying vec2 vUv;
+        uniform float uTime;
+        uniform vec2 uRes;
+        uniform float uWarp;
+        uniform float uNoise;
+        uniform float uScanI;
+        uniform float uScanF;
+
+        float hash(vec2 p) {
+          return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+        }
+        float noise(vec2 p) {
+          vec2 i = floor(p);
+          vec2 f = fract(p);
+          f = f * f * (3.0 - 2.0 * f);
+          return mix(mix(hash(i), hash(i + vec2(1,0)), f.x),
+                     mix(hash(i + vec2(0,1)), hash(i + vec2(1,1)), f.x), f.y);
+        }
+        float fbm(vec2 p) {
+          float v = 0.0; float a = 0.5;
+          for (int i = 0; i < 5; i++) {
+            v += a * noise(p);
+            p *= 2.0; a *= 0.5;
+          }
+          return v;
+        }
+
+        void main() {
+          vec2 uv = vUv;
+          float t = uTime;
+          vec2 warp = vec2(fbm(uv + t * 0.18), fbm(uv + vec2(1.7, 9.2) + t * 0.14));
+          uv += uWarp * warp;
+
+          float n = fbm(uv * 3.5 + t * 0.22);
+          float n2 = fbm(uv * 6.0 - t * 0.15 + vec2(4.3));
+
+          vec3 col = vec3(0.0);
+          col += vec3(0.86, 0.02, 0.0) * n;
+          col += vec3(0.12, 0.0, 0.0) * n2;
+          col = mix(col, col * vec3(0.9, 0.08, 0.02), n2);
+          col += uNoise * (hash(uv + t) - 0.5);
+
+          float scan = sin(uv.y * uScanF * 3.14159 * 80.0) * 0.5 + 0.5;
+          col *= 1.0 - uScanI * (1.0 - scan);
+
+          float vign = smoothstep(0.0, 0.4, uv.x) * smoothstep(1.0, 0.6, uv.x)
+                     * smoothstep(0.0, 0.3, uv.y) * smoothstep(1.0, 0.7, uv.y);
+          col *= vign;
+
+          gl_FragColor = vec4(col, vign * 0.92);
+        }`;
+
+      program = new Program(gl, {
+        vertex: vert,
+        fragment: frag,
+        uniforms: {
+          uTime: { value: 0 },
+          uRes: { value: [canvas.width, canvas.height] },
+          uWarp: { value: warpAmount },
+          uNoise: { value: noiseIntensity },
+          uScanI: { value: scanlineIntensity },
+          uScanF: { value: scanlineFrequency },
+        },
+      });
+
+      const geo = new Triangle(gl);
+      const mesh = new Mesh(gl, { geometry: geo, program });
+
+      function resize() {
+        const w = canvas.parentElement ? canvas.parentElement.offsetWidth : window.innerWidth;
+        const h = canvas.parentElement ? canvas.parentElement.offsetHeight : window.innerHeight;
+        renderer.setSize(w, h);
+        program.uniforms.uRes.value = [w, h];
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      let start = performance.now();
+      function tick() {
+        if (destroyed) return;
+        animId = requestAnimationFrame(tick);
+        program.uniforms.uTime.value = (performance.now() - start) * 0.001 * speed;
+        renderer.render({ scene: mesh });
+      }
+      tick();
+      stateRef.current = { resize, renderer };
+    }).catch(() => {});
+
+    return () => {
+      destroyed = true;
+      if (animId) cancelAnimationFrame(animId);
+      window.removeEventListener('resize', stateRef.current.resize || (() => {}));
+    };
+  }, []);
+
+  return React.createElement('canvas', {
+    ref: canvasRef,
+    style: { position: 'absolute', inset: 0, width: '100%', height: '100%', display: 'block' },
+  });
+};
+</script>
+
+<!-- LetterGlitch: Canvas 2D ASCII rain -->
+<script>
+window.LetterGlitch = function LetterGlitch({
+  glitchSpeed = 50,
+  smooth = true,
+  outerVignette = true,
+  centerVignette = false,
+}) {
+  const canvasRef = window.React.useRef(null);
+  useEffect = window.React.useEffect;
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*<>?/\\|[]{}';
+    const FONT_SIZE = 14;
+    let cols, rows, grid, animId, lastTime = 0;
+
+    function resize() {
+      const w = canvas.parentElement ? canvas.parentElement.offsetWidth : window.innerWidth;
+      const h = canvas.parentElement ? canvas.parentElement.offsetHeight : window.innerHeight;
+      canvas.width = w; canvas.height = h;
+      cols = Math.ceil(w / FONT_SIZE);
+      rows = Math.ceil(h / FONT_SIZE);
+      grid = Array.from({ length: cols }, () =>
+        Array.from({ length: rows }, () => ({ ch: CHARS[Math.floor(Math.random() * CHARS.length)], age: Math.random() }))
+      );
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function draw(ts) {
+      animId = requestAnimationFrame(draw);
+      if (ts - lastTime < (1000 / glitchSpeed)) return;
+      lastTime = ts;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.font = FONT_SIZE + 'px "IBM Plex Mono", monospace';
+      ctx.textBaseline = 'top';
+
+      for (let x = 0; x < cols; x++) {
+        for (let y = 0; y < rows; y++) {
+          const cell = grid[x][y];
+          if (Math.random() < 0.02) cell.ch = CHARS[Math.floor(Math.random() * CHARS.length)];
+          const alpha = 0.06 + 0.1 * cell.age;
+          ctx.fillStyle = `rgba(225,6,0,${alpha})`;
+          ctx.fillText(cell.ch, x * FONT_SIZE, y * FONT_SIZE);
+          cell.age = (cell.age + 0.001) % 1;
+        }
+      }
+
+      if (outerVignette) {
+        const grd = ctx.createRadialGradient(
+          canvas.width / 2, canvas.height / 2, canvas.height * 0.2,
+          canvas.width / 2, canvas.height / 2, canvas.width * 0.8
+        );
+        grd.addColorStop(0, 'rgba(0,0,0,0)');
+        grd.addColorStop(1, 'rgba(0,0,0,0.7)');
+        ctx.fillStyle = grd;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+    draw(0);
+
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener('resize', resize);
+    };
+  }, []);
+
+  return window.React.createElement('canvas', {
+    ref: canvasRef,
+    style: { position: 'absolute', inset: 0, width: '100%', height: '100%', display: 'block' },
+  });
+};
+</script>
+
+<!-- FuzzyText: Canvas 2D fuzzy/glitch heading -->
+<script>
+window.FuzzyText = function FuzzyText({
+  children = 'TEXT',
+  fontSize = '72px',
+  fontWeight = 900,
+  fontFamily = 'Archivo, sans-serif',
+  color = '#ffffff',
+  baseIntensity = 0.18,
+  hoverIntensity = 0.5,
+  fuzzRange = 20,
+  enableHover = true,
+}) {
+  const React = window.React;
+  const canvasRef = React.useRef(null);
+  const stateRef = React.useRef({ hover: false, animId: null });
+
+  React.useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let destroyed = false;
+
+    function measure() {
+      ctx.font = fontWeight + ' ' + fontSize + ' ' + fontFamily;
+      const m = ctx.measureText(children);
+      const h = parseInt(fontSize) * 1.2;
+      canvas.width = Math.ceil(m.width) + fuzzRange * 4;
+      canvas.height = Math.ceil(h) + fuzzRange * 2;
+    }
+    measure();
+
+    function draw() {
+      if (destroyed) return;
+      stateRef.current.animId = requestAnimationFrame(draw);
+      const intensity = stateRef.current.hover ? hoverIntensity : baseIntensity;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+      const lines = 12;
+      for (let i = 0; i < lines; i++) {
+        ctx.save();
+        ctx.font = fontWeight + ' ' + fontSize + ' ' + fontFamily;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        const dx = (Math.random() - 0.5) * fuzzRange * intensity;
+        const dy = (Math.random() - 0.5) * fuzzRange * intensity * 0.4;
+        const alpha = 0.12 + (1 - intensity) * 0.6 / lines;
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = color;
+        ctx.fillText(children, cx + dx, cy + dy);
+        ctx.restore();
+      }
+      ctx.save();
+      ctx.font = fontWeight + ' ' + fontSize + ' ' + fontFamily;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = color;
+      ctx.fillText(children, cx, cy);
+      ctx.restore();
+    }
+    draw();
+
+    if (enableHover) {
+      canvas.addEventListener('mouseenter', () => { stateRef.current.hover = true; });
+      canvas.addEventListener('mouseleave', () => { stateRef.current.hover = false; });
+    }
+
+    return () => {
+      destroyed = true;
+      cancelAnimationFrame(stateRef.current.animId);
+    };
+  }, []);
+
+  return React.createElement('canvas', {
+    ref: canvasRef,
+    style: { display: 'block', maxWidth: '100%', cursor: enableHover ? 'default' : 'auto' },
+  });
+};
+</script>
+
+<!-- DecryptedText: scroll-triggered character decrypt reveal -->
+<script>
+window.DecryptedText = function DecryptedText({
+  text = '',
+  animateOn = 'view',
+  sequential = true,
+  speed = 20,
+  encryptedClassName = 'cc-enc',
+}) {
+  const React = window.React;
+  const [displayed, setDisplayed] = React.useState(text.split('').map(ch => ({ ch, revealed: false })));
+  const ref = React.useRef(null);
+  const doneRef = React.useRef(false);
+
+  React.useEffect(() => {
+    if (doneRef.current) return;
+    const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%';
+    let intervalId = null;
+    let index = 0;
+
+    function startDecrypt() {
+      if (doneRef.current) return;
+      intervalId = setInterval(() => {
+        setDisplayed(prev => {
+          const next = prev.map((item, i) => {
+            if (item.revealed) return item;
+            if (sequential) {
+              if (i < index) return { ch: text[i], revealed: true };
+              return { ch: CHARS[Math.floor(Math.random() * CHARS.length)], revealed: false };
+            } else {
+              if (Math.random() < 0.1) return { ch: text[i], revealed: true };
+              return { ch: CHARS[Math.floor(Math.random() * CHARS.length)], revealed: false };
+            }
+          });
+          return next;
+        });
+        index++;
+        if (index > text.length + 5) {
+          clearInterval(intervalId);
+          doneRef.current = true;
+          setDisplayed(text.split('').map(ch => ({ ch, revealed: true })));
+        }
+      }, speed);
+    }
+
+    if (animateOn === 'view' && ref.current) {
+      const obs = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting) { obs.disconnect(); startDecrypt(); }
+      }, { threshold: 0.3 });
+      obs.observe(ref.current);
+      return () => { obs.disconnect(); if (intervalId) clearInterval(intervalId); };
+    } else {
+      startDecrypt();
+      return () => { if (intervalId) clearInterval(intervalId); };
+    }
+  }, []);
+
+  return React.createElement('span', { ref },
+    displayed.map((item, i) =>
+      React.createElement('span', {
+        key: i,
+        className: item.revealed ? '' : encryptedClassName,
+      }, item.ch)
+    )
+  );
+};
+</script>
+
+<script>
+// ── Data ──────────────────────────────────────────────────────────────────────
+const GUMROAD = "https://someonenamenicky.gumroad.com/l/xmqofg";
+
+const previewItems = [
+  { src: "uploads/cover.png",              label: "FRONT COVER",      caption: "100 Days in Bug Bounty Hunting — front cover" },
+  { src: "uploads/week-1-opener-page.png", label: "WEEK 1 · OPENER",  caption: "Week 1 — Foundation Building (Days 1–7)" },
+  { src: "uploads/contents-page-005.png",  label: "CONTENTS · p.005", caption: "Table of contents — Weeks 1–4" },
+  { src: "uploads/contents-page-006.png",  label: "CONTENTS · p.006", caption: "Table of contents — Weeks 5–14" },
+  { src: "uploads/contents-page-007.png",  label: "CONTENTS · p.007", caption: "Table of contents — Week 15" }
+];
+
+const notesItems = [
+  { src: "uploads/20260426_213024.jpg", label: "2FA BYPASS · CASE", caption: "Case study — a 2FA-bypass vulnerability that paid out $70,000" },
+  { src: "uploads/20260426_213019.jpg", label: "EXPLOITING 2FA",    caption: "How an auth-token / 2FA bypass works, and what 2FA is" },
+  { src: "uploads/20260426_213146.jpg", label: "REVERSE SHELLS",    caption: "Reverse shells & private vs public IP" }
+];
+
+const roadmapItems = [
+  { w:"01", t:"Foundation",     d:"Set up your toolkit, proxy, and learning habits." },
+  { w:"02", t:"First reports",  d:"Read real disclosures and how findings are communicated." },
+  { w:"03", t:"Business logic", d:"Spot flaws in how an application is meant to work." },
+  { w:"04", t:"Reconnaissance", d:"Map scope, subdomains, endpoints, and surface." },
+  { w:"05", t:"XSS",            d:"Reflected, stored, and DOM-based cross-site scripting." },
+  { w:"06", t:"SQL injection",  d:"Database injection points and safe testing." },
+  { w:"07", t:"IDOR",           d:"Insecure direct object references and access control." },
+  { w:"08", t:"Account takeover",d:"Chaining weaknesses that compromise accounts." },
+  { w:"09", t:"SSRF",           d:"Server-side request forgery and internal exposure." },
+  { w:"10", t:"File uploads",   d:"Unsafe upload handling and content-type tricks." },
+  { w:"11", t:"Authentication", d:"Login, reset, and session weaknesses." },
+  { w:"12", t:"Advanced testing",d:"Deeper techniques and edge-case probing." },
+  { w:"13", t:"Automation",     d:"Tooling and workflow to test efficiently." },
+  { w:"14", t:"Race conditions", d:"Timing and concurrency vulnerabilities." },
+  { w:"15", t:"Reflection",     d:"Review the journey and plan continued learning." }
+];
+
+const topics = ["XSS","SQL injection","IDOR","SSRF","GraphQL","API security","JWT","Session security","File uploads","Race conditions","Reconnaissance","Report writing","Responsible disclosure"];
+
+const faqs = [
+  { q:"Is it beginner-friendly?",              a:"Yes. It assumes no prior bug bounty experience and builds up week by week from the foundations." },
+  { q:"What format is included?",              a:"A downloadable PDF ebook you can keep and read on any device." },
+  { q:"How will I receive it?",                a:"Instantly after checkout through Gumroad — you download the PDF right away." },
+  { q:"Can I read it on mobile or desktop?",   a:"Yes. The PDF works on phones, tablets, laptops, and e-readers." },
+  { q:"Does it contain practical examples?",   a:"Yes. It focuses on practical vulnerability explanations, testing methodology, and real lessons from the journey." },
+  { q:"Are the handwritten notes included?",   a:"Yes. It includes 45 photos of the original handwritten notes." },
+  { q:"Is it suitable for experienced hunters?",a:"It is written for beginners. Experienced hunters may enjoy the notes and structure, but the depth targets newcomers." },
+  { q:"Is this an ethical hacking resource?",  a:"Yes. It emphasizes responsible, authorized testing and responsible disclosure throughout." }
+];
+
+// ── Lightbox state ─────────────────────────────────────────────────────────
+let lbSet = "preview";
+let lbIndex = 0;
+
+function lbItems() { return lbSet === "notes" ? notesItems : previewItems; }
+
+function openLightbox(set, idx) {
+  lbSet = set;
+  lbIndex = idx;
+  document.body.style.overflow = "hidden";
+  document.getElementById("lightbox").classList.add("open");
+  renderLightbox();
+}
+
+function closeLightbox() {
+  document.body.style.overflow = "";
+  document.getElementById("lightbox").classList.remove("open");
+}
+
+function stepLightbox(dir) {
+  const items = lbItems();
+  lbIndex = (lbIndex + dir + items.length) % items.length;
+  renderLightbox();
+}
+
+function renderLightbox() {
+  const items = lbItems();
+  const item = items[lbIndex];
+  document.getElementById("lb-counter").textContent = (lbIndex + 1) + " / " + items.length + " · " + item.label;
+  document.getElementById("lb-caption").textContent = item.caption;
+  const content = document.getElementById("lb-content");
+  content.innerHTML = "";
+  const img = document.createElement("img");
+  img.src = item.src;
+  img.alt = item.caption;
+  img.style.cssText = "max-width:100%;max-height:78vh;width:auto;height:auto;object-fit:contain;border-radius:6px;box-shadow:0 20px 60px rgba(0,0,0,0.6);";
+  content.appendChild(img);
+}
+
+document.getElementById("lb-close").addEventListener("click", closeLightbox);
+document.getElementById("lb-prev").addEventListener("click", () => stepLightbox(-1));
+document.getElementById("lb-next").addEventListener("click", () => stepLightbox(1));
+document.getElementById("lb-content").addEventListener("click", closeLightbox);
+document.getElementById("lightbox").addEventListener("click", function(e) {
+  if (e.target === this) closeLightbox();
+});
+document.addEventListener("keydown", (e) => {
+  if (!document.getElementById("lightbox").classList.contains("open")) return;
+  if (e.key === "Escape") closeLightbox();
+  else if (e.key === "ArrowRight") stepLightbox(1);
+  else if (e.key === "ArrowLeft") stepLightbox(-1);
+});
+
+// ── Render preview gallery ──────────────────────────────────────────────────
+(function() {
+  const grid = document.getElementById("preview-grid");
+  previewItems.forEach((item, i) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "gallery-btn";
+    btn.setAttribute("aria-label", "Open preview: " + item.caption);
+    btn.style.cssText = "background:#141414;border:1px solid #27272a;border-radius:6px;overflow:hidden;padding:0;text-align:left;display:block;width:100%;transition:border-color .15s ease,transform .15s ease;";
+    btn.addEventListener("click", () => openLightbox("preview", i));
+    btn.innerHTML = `
+      <div style="aspect-ratio:3/4;background:#0e0e0e;display:flex;align-items:center;justify-content:center;position:relative;">
+        <img src="${item.src}" alt="${item.caption}" decoding="async" style="width:100%;height:100%;object-fit:contain;" />
+      </div>
+      <div style="padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid #27272a;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.06em;color:#a1a1aa;">${item.label}</span>
+        <i data-lucide="maximize-2" style="width:14px;height:14px;color:#e10600;"></i>
+      </div>`;
+    grid.appendChild(btn);
+  });
+})();
+
+// ── Render notes gallery ────────────────────────────────────────────────────
+(function() {
+  const grid = document.getElementById("notes-grid");
+  notesItems.forEach((item, i) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.setAttribute("aria-label", "Open note: " + item.caption);
+    btn.style.cssText = "background:#fafafa;border:1px solid #e4e4e7;border-radius:6px;overflow:hidden;padding:0;text-align:left;display:block;width:100%;transition:border-color .15s ease,transform .15s ease;";
+    btn.addEventListener("click", () => openLightbox("notes", i));
+    btn.innerHTML = `
+      <div style="aspect-ratio:4/3;background:#f4f4f5;display:flex;align-items:center;justify-content:center;position:relative;">
+        <img src="${item.src}" alt="${item.caption}" decoding="async" style="width:100%;height:100%;object-fit:contain;" />
+      </div>
+      <div style="padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid #e4e4e7;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.06em;color:#a1a1aa;">${item.label}</span>
+        <i data-lucide="maximize-2" style="width:14px;height:14px;color:#e10600;"></i>
+      </div>`;
+    grid.appendChild(btn);
+  });
+})();
+
+// ── Render roadmap ──────────────────────────────────────────────────────────
+(function() {
+  const grid = document.getElementById("roadmap-grid");
+  roadmapItems.forEach(r => {
+    const card = document.createElement("div");
+    card.style.cssText = "border:1px solid #e4e4e7;border-radius:6px;padding:22px 22px 24px;background:#fff;border-top:3px solid #e10600;";
+    card.innerHTML = `
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;letter-spacing:0.1em;color:#a1a1aa;margin-bottom:8px;">WEEK ${r.w}</div>
+      <h3 style="font-family:Archivo,sans-serif;font-weight:800;font-size:20px;letter-spacing:-0.01em;margin:0 0 8px;">${r.t}</h3>
+      <p style="font-size:14.5px;line-height:1.55;color:#52525b;margin:0;">${r.d}</p>`;
+    grid.appendChild(card);
+  });
+})();
+
+// ── Render topics ───────────────────────────────────────────────────────────
+(function() {
+  const list = document.getElementById("topics-list");
+  topics.forEach(name => {
+    const tag = document.createElement("span");
+    tag.style.cssText = "display:inline-flex;align-items:center;gap:9px;background:#fff;border:1px solid #e4e4e7;border-radius:6px;padding:11px 16px;font-weight:600;font-size:15px;color:#0a0a0a;";
+    tag.innerHTML = `<span style="width:7px;height:7px;background:#e10600;border-radius:1px;flex:none;"></span>${name}`;
+    list.appendChild(tag);
+  });
+})();
+
+// ── Render FAQ ──────────────────────────────────────────────────────────────
+(function() {
+  const list = document.getElementById("faq-list");
+  faqs.forEach((faq, i) => {
+    const wrap = document.createElement("div");
+    wrap.style.cssText = "background:#fff;border:1px solid #e4e4e7;border-radius:6px;overflow:hidden;";
+
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.setAttribute("aria-expanded", "false");
+    btn.style.cssText = "width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 22px;text-align:left;";
+    btn.innerHTML = `
+      <span style="font-family:Archivo,sans-serif;font-weight:700;font-size:17px;color:#0a0a0a;">${faq.q}</span>
+      <i data-lucide="plus" class="faq-icon" style="width:20px;height:20px;color:#e10600;flex:none;transition:transform .2s;"></i>`;
+
+    const answer = document.createElement("div");
+    answer.className = "faq-answer";
+    answer.style.cssText = "padding:0 22px 22px;font-size:15.5px;line-height:1.65;color:#52525b;";
+    answer.textContent = faq.a;
+
+    btn.addEventListener("click", () => {
+      const isOpen = answer.classList.toggle("open");
+      btn.setAttribute("aria-expanded", isOpen);
+      const icon = btn.querySelector(".faq-icon");
+      icon.setAttribute("data-lucide", isOpen ? "minus" : "plus");
+      if (window.lucide) window.lucide.createIcons();
+    });
+
+    wrap.appendChild(btn);
+    wrap.appendChild(answer);
+    list.appendChild(wrap);
+  });
+})();
+
+// ── Init Lucide icons ───────────────────────────────────────────────────────
+function initIcons() {
+  if (window.lucide && window.lucide.createIcons) {
+    window.lucide.createIcons();
+  } else {
+    setTimeout(initIcons, 120);
+  }
+}
+initIcons();
+</script>
+
+<!-- ScrollCinema engine -->
+<script>
+(function() {
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const easeIO = (t) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
+  const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+  let p = 0, ccReady = false, cc = {}, pages = [], _tick = false;
+
+  function ccSetup() {
+    const g = (id) => document.getElementById(id);
+    const stage = g("cinema");
+    if (!stage) return;
+    cc = {
+      section: stage,
+      cover: g("cc-cover"), p1: g("cc-p1"), p2: g("cc-p2"), p3: g("cc-p3"), p4: g("cc-p4"),
+      note: g("cc-note"), rig: g("cc-rig"),
+      veil: g("cc-veil"), hero: g("cc-hero"), hint: g("cc-hint"),
+      capB: g("cc-capB"), capC: g("cc-capC"), end: g("cc-end"),
+      frame: g("cc-frame"),
+      acts: [g("cc-act-0"), g("cc-act-1"), g("cc-act-2")],
+      bar: g("cc-bar"),
+    };
+    pages = [
+      { el: cc.cover, k: 0, cover: true },
+      { el: cc.p1, k: 1 },
+      { el: cc.p2, k: 2 },
+      { el: cc.p3, k: 3 },
+      { el: cc.p4, k: 4 },
+    ];
+    ccReady = true;
+    onCCScroll();
+    window.addEventListener("scroll", onCCScroll, { passive: true });
+    window.addEventListener("resize", onCCScroll, { passive: true });
+  }
+
+  function onCCScroll() {
+    if (_tick) return; _tick = true;
+    requestAnimationFrame(() => {
+      _tick = false;
+      if (!ccReady || !cc.section) return;
+      const r = cc.section.getBoundingClientRect();
+      const total = r.height - window.innerHeight;
+      p = total > 0 ? clamp(-r.top / total, 0, 1) : 0;
+      applyFrame(p);
+    });
+  }
+
+  function applyFrame(p) {
+    if (!ccReady) return;
+    const seg = (a, b) => clamp((p - a) / (b - a), 0, 1);
+    const eE = easeIO(seg(0, 0.30));
+    const eR = easeIO(seg(0.28, 0.60));
+    const eZ = easeOut(seg(0.60, 1.0));
+    const pageFade = easeOut(seg(0.62, 0.84));
+
+    const ry = 42 * eR * (1 - eZ);
+    const rx = -15 * eE * (1 - 0.65 * eZ);
+    const recenterY = 105 * eE * (1 - eZ);
+    cc.rig.style.transform = `translateY(${recenterY.toFixed(1)}px) translateZ(${(-95 * eE).toFixed(1)}px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+
+    pages.forEach(({ el, k, cover }) => {
+      if (!el) return;
+      let z = -k * 138 * eE, y = -k * 46 * eE, x = (k - 2) * 36 * eE, rz = (k - 2) * 5 * eE;
+      if (cover) { z = 100 * eE; y = -82 * eE; x = 0; rz = 0; }
+      el.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, ${z.toFixed(1)}px) rotateZ(${rz.toFixed(2)}deg)`;
+      el.style.opacity = (1 - pageFade).toFixed(3);
+    });
+
+    const nz = lerp(-5 * 138 * eE, 320, eZ);
+    const ny = lerp(-5 * 46 * eE, 0, eZ);
+    const ns = lerp(1, 4.2, eZ);
+    const nrz = 3 * 5 * eE * (1 - eZ);
+    cc.note.style.transform = `translate3d(0px, ${ny.toFixed(1)}px, ${nz.toFixed(1)}px) rotateZ(${nrz.toFixed(2)}deg) scale(${ns.toFixed(3)})`;
+    cc.note.style.opacity = "1";
+
+    const heroFade = seg(0.02, 0.12);
+    cc.hero.style.opacity = (1 - heroFade).toFixed(3);
+    cc.hero.style.transform = `translateY(${(-40 * heroFade).toFixed(1)}px)`;
+
+    cc.hint.style.opacity = (1 - seg(0, 0.06)).toFixed(3);
+
+    const pulse = (a, b, c, d) => Math.max(0, Math.min(seg(a, b), 1 - seg(c, d)));
+    cc.capB.style.opacity = pulse(0.09, 0.16, 0.25, 0.31).toFixed(3);
+    cc.capC.style.opacity = pulse(0.34, 0.42, 0.53, 0.60).toFixed(3);
+
+    if (cc.veil) cc.veil.style.opacity = (0.85 * (1 - easeOut(seg(0.6, 0.9)))).toFixed(3);
+
+    const endO = seg(0.87, 0.97);
+    cc.end.style.opacity = endO.toFixed(3);
+    cc.end.style.transform = `translateY(${(20 * (1 - endO)).toFixed(1)}px)`;
+
+    const cur = Math.round(p * 600);
+    cc.frame.textContent = String(cur).padStart(4, "0") + " / 0600";
+
+    const ai = p < 0.30 ? 0 : p < 0.60 ? 1 : 2;
+    cc.acts.forEach((a, i) => { if (a) a.style.color = i === ai ? "#e10600" : "#52525b"; });
+    cc.bar.style.width = (p * 100).toFixed(2) + "%";
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", ccSetup);
+  else ccSetup();
+})();
+</script>
+
+<!-- Mount React components -->
+<script>
+(function mountComponents() {
+  if (window.DarkVeil && document.getElementById('cc-veil-mount')) {
+    ReactDOM.createRoot(document.getElementById('cc-veil-mount')).render(
+      React.createElement(window.DarkVeil, {
+        speed: 0.7, warpAmount: 0.08, noiseIntensity: 0.04,
+        scanlineIntensity: 0.12, scanlineFrequency: 2.0,
+      })
+    );
+  }
+  if (window.LetterGlitch && document.getElementById('cc-glitch-mount')) {
+    ReactDOM.createRoot(document.getElementById('cc-glitch-mount')).render(
+      React.createElement(window.LetterGlitch, { glitchSpeed: 60, smooth: true, outerVignette: true, centerVignette: false })
+    );
+  }
+  if (window.FuzzyText && document.getElementById('cc-fuzzy-mount')) {
+    ReactDOM.createRoot(document.getElementById('cc-fuzzy-mount')).render(
+      React.createElement(window.FuzzyText, {
+        fontSize: 'clamp(40px,7.2vw,84px)', fontWeight: 900,
+        fontFamily: 'Archivo, sans-serif', color: '#ffffff',
+        baseIntensity: 0.16, hoverIntensity: 0.5, fuzzRange: 22, enableHover: true,
+      }, 'BUG BOUNTY')
+    );
+  }
+  document.querySelectorAll('[data-decrypt]').forEach(el => {
+    const host = el.querySelector('.decrypt-host');
+    if (!host || !window.DecryptedText) return;
+    const text = host.textContent.trim();
+    host.textContent = '';
+    ReactDOM.createRoot(host).render(
+      React.createElement(window.DecryptedText, { text, animateOn: 'view', sequential: true, speed: 20, encryptedClassName: 'cc-enc' })
+    );
+  });
+})();
+</script>
+</body>
+</html>
